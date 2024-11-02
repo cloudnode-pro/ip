@@ -81,9 +81,14 @@ export class IPv6 extends IPAddress {
      * @internal
      */
     private static parseHextet(hextet: string): number | number[] {
-        return IPv4.regex.test(hextet)
-            ? Array.from(new Uint16Array(IPv4.fromString(hextet).binary().buffer))
-            : Number.parseInt(hextet, 16);
+        if (IPv4.regex.test(hextet)) {
+            const ip = IPv4.fromString(hextet).binary();
+            return [
+                (ip[0]! << 8) | ip[1]!,
+                (ip[2]! << 8) | ip[3]!
+            ]
+        }
+        return Number.parseInt(hextet, 16);
     }
 
     /**
@@ -116,7 +121,13 @@ export class IPv6 extends IPAddress {
      * @see {@link IPv6#hasMappedIPv4}
      */
     public getMappedIPv4(): IPv4 {
-        return IPv4.fromBinary(new Uint8Array(this.binary().buffer).slice(-4));
+        const bin = this.binary().slice(-2);
+        return IPv4.fromBinary(new Uint8Array([
+            (bin[0]! >> 8) & 0xFF,
+            bin[0]! & 0xFF,
+            (bin[1]! >> 8) & 0xFF,
+            bin[1]! & 0xFF
+        ]));
     }
 
     public override toString(): string {
