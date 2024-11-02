@@ -1,0 +1,98 @@
+import {IPv4, IPv6, Subnet} from "./index.js"
+
+/**
+ * A network that can contain multiple subnets
+ */
+export class Network {
+    /**
+     * Reserved subnets
+     */
+    public static readonly BOGON = new Network([
+        // IPv4
+        Subnet.fromCIDR("0.0.0.0/8"),
+        Subnet.fromCIDR("10.0.0.0/8"),
+        Subnet.fromCIDR("100.64.0.0/10"),
+        Subnet.fromCIDR("127.0.0.0/8"),
+        Subnet.fromCIDR("169.254.0.0/16"),
+        Subnet.fromCIDR("172.16.0.0/12"),
+        Subnet.fromCIDR("192.0.0.0/24"),
+        Subnet.fromCIDR("192.0.2.0/24"),
+        Subnet.fromCIDR("192.88.99.0/24"),
+        Subnet.fromCIDR("192.168.0.0/16"),
+        Subnet.fromCIDR("198.18.0.0/15"),
+        Subnet.fromCIDR("198.51.100.0/24"),
+        Subnet.fromCIDR("203.0.113.0/24"),
+        Subnet.fromCIDR("224.0.0.0/4"),
+        Subnet.fromCIDR("233.252.0.0/24"),
+        Subnet.fromCIDR("240.0.0.0/4"),
+        Subnet.fromCIDR("255.255.255.255/32"),
+        // IPv6
+        Subnet.fromCIDR("::/128"),
+        Subnet.fromCIDR("::1/128"),
+        Subnet.fromCIDR("64:ff9b:1::/48"),
+        Subnet.fromCIDR("100::/64"),
+        Subnet.fromCIDR("2001:20::/28"),
+        Subnet.fromCIDR("2001:db8::/32"),
+        Subnet.fromCIDR("3fff::/20"),
+        Subnet.fromCIDR("5f00::/16"),
+        Subnet.fromCIDR("fc00::/7"),
+        Subnet.fromCIDR("fe80::/10"),
+    ]);
+
+    readonly #subnets: Map<string, Subnet<IPv4 | IPv6>> = new Map();
+
+    /**
+     * Create new network
+     * @param [subnets] Initial subnets to add to this network
+     */
+    public constructor(subnets?: Iterable<Subnet<IPv4 | IPv6>>) {
+        if (subnets) for (const subnet of subnets) this.add(subnet);
+    }
+
+    /**
+     * Add a subnet to this network
+     */
+    public add(subnet: Subnet<IPv4 | IPv6>): void {
+        this.#subnets.set(subnet.toString(), subnet);
+    }
+
+    /**
+     * Remove a subnet from this network
+     * @param cidr CIDR notation of the subnet to remove
+     */
+    public remove(cidr: string): void {
+        this.#subnets.delete(Subnet.fromCIDR(cidr).toString());
+    }
+
+    /**
+     * Check if subnet is in this network
+     * @param cidr CIDR notation of the subnet to check
+     */
+    public hasSubnet(cidr: string): boolean {
+        return this.#subnets.has(Subnet.fromCIDR(cidr).toString());
+    }
+
+    /**
+     * Get all subnets in this network mapped to their CIDR notation
+     */
+    public subnets(): ReadonlyMap<string, Subnet<IPv4 | IPv6>> {
+        return this.#subnets;
+    }
+
+    /**
+     * Check if an IP address is in this network
+     */
+    public has(address: IPv4 | IPv6): boolean {
+        for (const subnet of this.#subnets.values()) if (subnet.has(address)) return true;
+        return false;
+    }
+
+    /**
+     * Get the number of addresses in this network
+     */
+    public size(): bigint {
+        let size = 0n;
+        for (const subnet of this.#subnets.values()) size += subnet.size();
+        return size;
+    }
+}
