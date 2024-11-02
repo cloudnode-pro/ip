@@ -1,0 +1,10 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "out": "docs",
+  "darkHighlightTheme": "aurora-x",
+  "lightHighlightTheme": "catppuccin-latte",
+  "plugin": ["typedoc-plugin-mdn-links"],
+  "includeVersion": true,
+  "githubPages": true,
+  "customFooterHtml": "Copyright © 2024 Cloudnode OÜ. Licensed under the LGPL-3.0."
+}
