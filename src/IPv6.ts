@@ -10,7 +10,7 @@ export class IPv6 extends IPAddress {
      * Create new IPv6 address instance
      */
     public constructor(value: bigint) {
-        if (value < 0n || value > 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFn)
+        if (value < 0n || value > ((1n << BigInt(IPv6.bitLength)) - 1n))
             throw new TypeError("Expected 128-bit unsigned integer, got " + value.constructor.name + " 0x" + value.toString(16));
         super(value);
     }

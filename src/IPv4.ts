@@ -17,7 +17,8 @@ export class IPv4 extends IPAddress {
 
     public constructor(value: number | bigint) {
         const int = BigInt(value);
-        if (int < 0n || int > 0xFFFFFFFFn) throw new TypeError("Expected 32-bit unsigned integer, got " + int.constructor.name + " " + int.toString(10));
+        if (int < 0n || int > (1n << BigInt(IPv4.bitLength)) - 1n)
+            throw new TypeError("Expected 32-bit unsigned integer, got " + int.constructor.name + " " + int.toString(10));
         super(int);
     }
 
