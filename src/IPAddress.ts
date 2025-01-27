@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 Cloudnode OÜ
+ * Copyright © 2024–2025 Cloudnode OÜ
  *
  * This file is part of @cldn/ip.
  *
@@ -44,7 +44,7 @@ export abstract class IPAddress {
     /**
      * Get IP address binary representation
      */
-    public abstract binary(): ArrayBuffer;
+    public abstract binary(): ArrayBufferView;
 
     /**
      * Check if the given addresses are equal
