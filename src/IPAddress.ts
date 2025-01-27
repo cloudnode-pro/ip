@@ -44,7 +44,7 @@ export abstract class IPAddress {
     /**
      * Get IP address binary representation
      */
-    public abstract binary(): ArrayBuffer;
+    public abstract binary(): ArrayBufferView;
 
     /**
      * Check if the given addresses are equal
