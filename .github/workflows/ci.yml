@@ -63,22 +63,19 @@ jobs:
       - name: Install latest NPM
         run: npm i -g npm@latest
 
+      - name: Install test dependencies
+        run: npm ci
+
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: package
-          path: ./package
+          path: .
 
       - name: Extract build package
-        working-directory: ./package
-        run: tar -xzf cldn-ip-0.0.0-dev.tgz
-
-      - name: Install test dependencies
-        working-directory: ./package/package
-        run: npm ci
+        run: tar -xzf cldn-ip-0.0.0-dev.tgz --strip-components=1 -C . --overwrite
 
       - name: Test
-        working-directory: ./package/package
         run: npm run test
 
   publish:
