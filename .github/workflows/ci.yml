@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           registry-url: https://registry.npmjs.org/
           cache: npm
 
@@ -32,9 +32,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Test
-        run: npm run test
-
       - name: Pack
         run: npm pack
 
@@ -43,6 +40,44 @@ jobs:
         with:
           name: package
           path: cldn-ip-0.0.0-dev.tgz
+
+  test:
+    name: Test on Node.js ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22, 24]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: https://registry.npmjs.org/
+          cache: npm
+
+      - name: Install latest NPM
+        run: npm i -g npm@latest
+
+      - name: Install test dependencies
+        run: npm ci
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: package
+          path: .
+
+      - name: Extract build package
+        run: tar -xzf cldn-ip-0.0.0-dev.tgz --strip-components=1 -C . --overwrite
+
+      - name: Test
+        run: npm run test
+
   publish:
     name: Publish
     needs: build
@@ -59,7 +94,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           registry-url: https://registry.npmjs.org/
           cache: npm
 
