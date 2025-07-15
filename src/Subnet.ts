@@ -17,7 +17,7 @@
 import {IPAddress, IPv4, IPv6} from "./index.js";
 
 /**
- * A subnet of IP addresses.
+ * An address range subnetwork of IP addresses.
  *
  * @typeParam T IP address family.
  */
