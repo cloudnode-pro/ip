@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 Cloudnode OÜ
+ * Copyright © 2024–2025 Cloudnode OÜ
  *
  * This file is part of @cldn/ip.
  *
@@ -17,11 +17,11 @@
 import {IPv4, IPv6, Subnet} from "./index.js"
 
 /**
- * A network that can contain multiple subnets
+ * A network that can contain multiple subnets.
  */
 export class Network {
     /**
-     * Reserved subnets
+     * A network of reserved subnets. This network does not contain publicly routable IP addresses.
      */
     public static readonly BOGON = new Network([
         // IPv4
@@ -58,45 +58,50 @@ export class Network {
     readonly #subnets: Map<string, Subnet<IPv4 | IPv6>> = new Map();
 
     /**
-     * Create new network
-     * @param [subnets] Initial subnets to add to this network
+     * Creates a new network.
+     *
+     * @param [subnets] Initial subnets to add to this network.
      */
     public constructor(subnets?: Iterable<Subnet<IPv4 | IPv6>>) {
         if (subnets) for (const subnet of subnets) this.add(subnet);
     }
 
     /**
-     * Add a subnet to this network
+     * Adds a subnet to this network.
      */
     public add(subnet: Subnet<IPv4 | IPv6>): void {
         this.#subnets.set(subnet.toString(), subnet);
     }
 
     /**
-     * Remove a subnet from this network
-     * @param cidr CIDR notation of the subnet to remove
+     * Removes a subnet from this network.
+     *
+     * @param cidr CIDR notation of the subnet to remove.
      */
     public remove(cidr: string): void {
         this.#subnets.delete(Subnet.fromCIDR(cidr).toString());
     }
 
     /**
-     * Check if subnet is in this network
-     * @param cidr CIDR notation of the subnet to check
+     * Checks if a subnet is in this network.
+     *
+     * @param cidr CIDR notation of the subnet to check.
      */
     public hasSubnet(cidr: string): boolean {
         return this.#subnets.has(Subnet.fromCIDR(cidr).toString());
     }
 
     /**
-     * Get all subnets in this network mapped to their CIDR notation
+     * Gets all subnets in this network mapped to their CIDR notation.
      */
     public subnets(): ReadonlyMap<string, Subnet<IPv4 | IPv6>> {
         return this.#subnets;
     }
 
     /**
-     * Check if an IP address is in this network
+     * Checks if an IP address is in this network.
+     *
+     * @param address IP address to check.
      */
     public has(address: IPv4 | IPv6): boolean {
         for (const subnet of this.#subnets.values()) if (subnet.has(address)) return true;
@@ -104,7 +109,7 @@ export class Network {
     }
 
     /**
-     * Get the number of addresses in this network
+     * Gets the number of addresses in this network.
      */
     public size(): bigint {
         let size = 0n;

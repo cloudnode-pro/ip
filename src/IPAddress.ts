@@ -17,23 +17,27 @@
 import {IPv4, IPv6} from "./index.js";
 
 /**
- * An IP address
+ * An IP address.
  */
 export abstract class IPAddress {
     /**
-     * The integer representation of the IP address
+     * The integer representation of the IP address.
      */
     public readonly value: bigint;
 
     /**
-     * Create new IP address instance
+     * Creates a new IP address instance.
+     *
+     * @param value The integer representation of the IP address.
+     * @deprecated This class will be sealed in v2.0.0 and should not be extended by public API users.
      */
     protected constructor(value: bigint) {
         this.value = value;
     }
 
     /**
-     * Create IP address from string
+     * Creates an IP address from a string.
+     *
      * @throws {@link !RangeError} If provided string is not a valid IPv4 or IPv6 address
      */
     public static fromString(str: string): IPv4 | IPv6 {
@@ -42,19 +46,19 @@ export abstract class IPAddress {
     }
 
     /**
-     * Get IP address binary representation
+     * Gets the IP address binary representation.
      */
     public abstract binary(): ArrayBufferView;
 
     /**
-     * Check if the given addresses are equal
+     * Checks if the given addresses are equal.
      */
     public equals(other: IPAddress): boolean {
         return other instanceof this.constructor && other.value === this.value;
     }
 
     /**
-     * Format IP address as string
+     * Formats the IP address as string.
      */
     public abstract toString(): string;
 }

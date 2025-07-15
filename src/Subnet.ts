@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 Cloudnode OÜ
+ * Copyright © 2024–2025 Cloudnode OÜ
  *
  * This file is part of @cldn/ip.
  *
@@ -17,30 +17,32 @@
 import {IPAddress, IPv4, IPv6} from "./index.js";
 
 /**
- * A subnet of IP addresses
- * @typeParam T IP address family
+ * A subnet of IP addresses.
+ *
+ * @typeParam T IP address family.
  */
 export class Subnet<T extends IPv4 | IPv6> implements Iterable<T> {
     /**
-     * IPv4-mapped IPv6 subnet
+     * IPv4-mapped IPv6 subnet.
      */
     public static readonly IPV4_MAPPED_IPV6 = Subnet.fromCIDR("::ffff:0.0.0.0/96");
 
     /**
-     * Subnet address (i.e. the first/gateway IP address of the network)
+     * The subnet address (i.e. the first/gateway IP address of the network).
      */
     public readonly address: T;
 
     /**
-     * IP address constructor
+     * IP address constructor.
      */
     readonly #AddressClass: typeof IPv4 | typeof IPv6;
 
     /**
-     * Create new subnet instance
-     * @param address An IP address
-     * @param suffix Subnet suffix bits
-     * @throws {@link !RangeError} If the suffix is greater than the IP address family bit-length
+     * Creates a new subnet instance.
+     *
+     * @param address An IP address.
+     * @param suffix Subnet suffix bits.
+     * @throws {@link !RangeError} If the suffix is greater than the IP address family bit-length.
      */
     public constructor(address: T, public readonly suffix: number) {
         this.#AddressClass = address.constructor as typeof IPv4 | typeof IPv6;
@@ -49,7 +51,9 @@ export class Subnet<T extends IPv4 | IPv6> implements Iterable<T> {
     }
 
     /**
-     * Create subnet from string in CIDR notation
+     * Creates a subnet from a string in CIDR notation.
+     *
+     * @param cidr A string in CIDR notation.
      * @throws {@link !RangeError} If the address or suffix is invalid
      */
     public static fromCIDR(cidr: string): Subnet<IPv4 | IPv6> {
@@ -60,28 +64,30 @@ export class Subnet<T extends IPv4 | IPv6> implements Iterable<T> {
     }
 
     /**
-     * Get the network mask
+     * Gets the network mask.
      */
     public netmask(): bigint {
         return ((1n << BigInt(this.suffix)) - 1n) << BigInt(this.#AddressClass.bitLength - this.suffix);
     }
 
     /**
-     * Get the network wildcard mask
+     * Gets the network wildcard mask.
      */
     public wildcard(): bigint {
         return ((1n << BigInt(this.#AddressClass.bitLength - this.suffix)) - 1n);
     }
 
     /**
-     * Get the last IP address in the subnet (i.e. broadcast address)
+     * Gets the last IP address in the subnet (i.e. broadcast address).
      */
     public broadcast(): T {
         return new this.#AddressClass(this.address.value | this.wildcard()) as T;
     }
 
     /**
-     * Check if the provided IP address is in this subnet
+     * Checks if the provided IP address is in this subnet.
+     *
+     * @param address IP address to check.
      */
     public has(address: T): boolean {
         if (!(address instanceof this.#AddressClass)) return false;
@@ -89,8 +95,7 @@ export class Subnet<T extends IPv4 | IPv6> implements Iterable<T> {
     }
 
     /**
-     * Get the number of addresses in this subnet.
-     * This number includes the broadcast and gateway addresses, so for the
+     * Gets the number of addresses in this subnet. This number includes the broadcast and gateway addresses, so for the
      * number of *usable* addresses, subtract 2.
      */
     public size(): bigint {
@@ -98,37 +103,38 @@ export class Subnet<T extends IPv4 | IPv6> implements Iterable<T> {
     }
 
     /**
-     * Iterate all IP addresses in this subnet
+     * Iterates all IP addresses in this subnet.
      *
      * **NOTE**: This can be slow for large subnets. If you need to check if an
-     * IP address is in the subnet, use {@link Subnet#contains}.
+     * IP address is in the subnet, use {@link Subnet#has}.
      */
     public* iterate(): IterableIterator<T> {
         for (let i = this.address.value; i <= this.broadcast().value; ++i) yield new this.#AddressClass(i) as T;
     }
 
     /**
-     * Iterate all IP addresses in this subnet
+     * Iterates all IP addresses in this subnet.
      *
      * **NOTE**: This can be slow for large subnets. If you need to check if an
-     * IP address is in the subnet, use {@link Subnet#contains}.
+     * IP address is in the subnet, use {@link Subnet#has}.
      */
     public [Symbol.iterator](): IterableIterator<T> {
         return this.iterate();
     }
 
     /**
-     * A set containing all IP addresses in this subnet
+     * Creates a set containing all IP addresses in this subnet.
      *
      * **NOTE**: This can be slow for large subnets. If you need to check if an
-     * IP address is in the subnet, use {@link Subnet#contains}.
+     * IP address is in the subnet, use {@link Subnet#has}.
      */
     public set(): Set<T> {
         return new Set(this.iterate());
     }
 
     /**
-     * String representation of this subnet in CIDR notation
+     * Creates a string representation of this subnet in CIDR notation.
+     *
      * @example "203.0.113.0/24"
      */
     public toString(): string {

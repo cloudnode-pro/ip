@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024 Cloudnode OÜ
+ * Copyright © 2024–2025 Cloudnode OÜ
  *
  * This file is part of @cldn/ip.
  *
@@ -17,18 +17,33 @@
 import {IPAddress} from "./index.js";
 
 /**
- * An IPv4 address
+ * An IPv4 address.
  */
 export class IPv4 extends IPAddress {
+    /**
+     * Regular expression for testing IPv4 addresses in string form.
+     */
     public static regex = /^(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)$/;
+
+    /**
+     * Bit length of IPv4 addresses.
+     */
     public static bitLength = 32;
 
     /**
-     * Create new IPv4 address instance
-     * @throws {@link !TypeError} If
+     * Creates a new IPv4 address instance.
+     *
+     * @param value A 32-bit unsigned big integer.
+     * @throws {@link !TypeError} If provided value is not a 32-bit unsigned integer.
      */
     public constructor(value: bigint);
 
+    /**
+     * Creates a new IPv4 address instance.
+     *
+     * @param value A 32-bit unsigned number.
+     * @throws {@link !TypeError} If provided value is not a 32-bit unsigned integer.
+     */
     public constructor(value: number);
 
     public constructor(value: number | bigint) {
@@ -39,8 +54,10 @@ export class IPv4 extends IPAddress {
     }
 
     /**
-     * Create an IPv4 address instance from octets
-     * @throws {@link !RangeError} If provided octets are not 4
+     * Creates an IPv4 address instance from octets.
+     *
+     * @param octets A typed array of 4 octets.
+     * @throws {@link !RangeError} If provided octets are not 4.
      */
     public static fromBinary(octets: Uint8Array): IPv4 {
         if (octets.length !== 4) throw new RangeError("Expected 4 octets, got " + octets.length);
@@ -56,8 +73,10 @@ export class IPv4 extends IPAddress {
     }
 
     /**
-     * Create an IPv4 address instance from string
-     * @throws {@link !RangeError} If provided string is not a valid IPv4 address
+     * Creates an IPv4 address instance from a string.
+     *
+     * @param str A string representation of an IPv4 address.
+     * @throws {@link !RangeError} If provided string is not a valid IPv4 address.
      */
     public static override fromString(str: string): IPv4 {
         const octets = str.split(".", 4).map(octet => Number.parseInt(octet, 10));
@@ -68,7 +87,7 @@ export class IPv4 extends IPAddress {
     }
 
     /**
-     * Get the 4 octets of the IPv4 address
+     * Gets the 4 octets of the IPv4 address.
      */
     public override binary(): Uint8Array {
         return new Uint8Array([
