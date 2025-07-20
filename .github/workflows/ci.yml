@@ -136,7 +136,7 @@ jobs:
 
       - name: Generate docs
         if: "!github.event.release.prerelease"
-        run: npm run docs
+        run: npm run docs:build
 
       - name: Set up GitHub pages
         if: "!github.event.release.prerelease"
@@ -146,7 +146,7 @@ jobs:
         if: "!github.event.release.prerelease"
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs
+          path: docs/.vitepress/dist
 
       - name: Deploy to GitHub Pages
         if: "!github.event.release.prerelease"

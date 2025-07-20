@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024–2025 Cloudnode OÜ
+ * Copyright © 2024–2025 Cloudnode OÜ.
  *
  * This file is part of @cldn/ip.
  *
@@ -17,19 +17,22 @@
 import {IPAddress, IPv4, Subnet} from "./index.js";
 
 /**
- * An IPv6 address.
+ * Represents an Internet Protocol version 6 (IPv6) address.
  */
 export class IPv6 extends IPAddress {
-    public static bitLength = 128;
+    /**
+     * Bit length of IPv6 addresses.
+     */
+    public static BIT_LENGTH = 128;
 
     /**
      * Creates a new IPv6 address instance.
      *
-     * @param value A 128-bit unsigned big integer.
-     * @throws {@link !TypeError} If provided value is not a 128-bit unsigned integer.
+     * @param value 128-bit unsigned integer.
+     * @throws {@link !TypeError} If the value is not a 128-bit unsigned integer.
      */
     public constructor(value: bigint) {
-        if (value < 0n || value > ((1n << BigInt(IPv6.bitLength)) - 1n))
+        if (value < 0n || value > ((1n << BigInt(IPv6.BIT_LENGTH)) - 1n))
             throw new TypeError("Expected 128-bit unsigned integer, got " + value.constructor.name + " 0x" + value.toString(16));
         super(value);
     }
@@ -37,8 +40,8 @@ export class IPv6 extends IPAddress {
     /**
      * Creates an IPv6 address instance from hextets.
      *
-     * @param hextets A typed array of 8 hextets.
-     * @throws {@link !RangeError} If provided hextets are not 8.
+     * @param hextets Typed array of 8 hextets.
+     * @throws {@link !RangeError} If the number of hextets is not 8.
      */
     public static fromBinary(hextets: Uint16Array): IPv6 {
         if (hextets.length !== 8) throw new RangeError("Expected 8 hextets, got " + hextets.length);
@@ -58,11 +61,11 @@ export class IPv6 extends IPAddress {
     /**
      * Creates an IPv6 address instance from a string.
      *
-     * @param str A string representation of an IPv6 address.
-     * @throws {@link !RangeError} If provided string is not a valid IPv6 address.
+     * @param ip String representation of an IPv6 address.
+     * @throws {@link !RangeError} If the string is not a valid IPv6 address.
      */
-    public static override fromString(str: string): IPv6 {
-        const parts = str.split("::", 2);
+    public static override fromString(ip: string): IPv6 {
+        const parts = ip.split("::", 2);
         const hextestStart = parts[0]! === ""
             ? []
             : parts[0]!.split(":").flatMap(IPv6.parseHextet);
@@ -74,7 +77,7 @@ export class IPv6 extends IPAddress {
             hextestEnd.some(hextet => Number.isNaN(hextet) || hextet < 0 || hextet > 0xFFFF) ||
             (parts.length === 2 && hextestStart.length + hextestEnd.length > 6) ||
             (parts.length < 2 && hextestStart.length + hextestEnd.length !== 8)
-        ) throw new RangeError("Expected valid IPv6 address, got " + str);
+        ) throw new RangeError("Expected valid IPv6 address, got " + ip);
 
         const hextets = new Uint16Array(8);
         hextets.set(hextestStart, 0);
@@ -85,10 +88,12 @@ export class IPv6 extends IPAddress {
 
     /**
      * Parses a string hextet into unsigned 16-bit integer.
+     *
+     * @param hextet String representation of a hextet.
      * @internal
      */
     private static parseHextet(hextet: string): number | number[] {
-        if (IPv4.regex.test(hextet)) {
+        if (IPv4.REGEX.test(hextet)) {
             const ip = IPv4.fromString(hextet).binary();
             return [
                 (ip[0]! << 8) | ip[1]!,
@@ -99,7 +104,7 @@ export class IPv6 extends IPAddress {
     }
 
     /**
-     * Gets the 8 hextets of the IPv6 address
+     * Returns the 8 hextets of the IPv6 address.
      */
     public binary(): Uint16Array {
         return new Uint16Array([
@@ -115,16 +120,17 @@ export class IPv6 extends IPAddress {
     }
 
     /**
-     * Checks whether this is an IPv4-mapped IPv6 address. Only works for `::ffff:0:0/96`.
+     * Checks whether this IPv6 address is an IPv4-mapped IPv6 address as defined by the `::ffff:0:0/96` prefix. This
+     * method does not detect other IPv4 embedding or tunnelling formats.
      */
     public hasMappedIPv4(): boolean {
-        return Subnet.IPV4_MAPPED_IPV6.has(this);
+        return Subnet.IPV4_MAPPED_IPV6.contains(this);
     }
 
     /**
-     * Gets the IPv4-mapped IPv6 address.
+     * Returns the IPv4-mapped IPv6 address.
      *
-     * @returns An IPv4 address from the least significant 32 bits of this IPv6 address.
+     * @returns The IPv4 address from the least significant 32 bits of this IPv6 address.
      * @see {@link IPv6#hasMappedIPv4}
      */
     public getMappedIPv4(): IPv4 {
@@ -137,10 +143,18 @@ export class IPv6 extends IPAddress {
         ]));
     }
 
+    /**
+     * Returns the IP address as a string in colon-hexadecimal notation.
+     */
     public override toString(): string {
         const str = Array.from(this.binary()).map(octet => octet.toString(16)).join(":");
-        const longest = str.match(/(?:^|:)0(?::0)+(?:$|:)/g)?.reduce((acc, cur) => cur.length > acc.length ? cur : acc, "") ?? null;
+        const longest = str.match(/(?:^|:)0(?::0)+(?:$|:)/g)
+            ?.reduce((acc, cur) => cur.length > acc.length ? cur : acc, "") ?? null;
         if (longest === null) return str;
         return str.replace(longest, "::");
+    }
+
+    public override offset(offset: bigint | number): IPv6 {
+        return new IPv6(this.value + BigInt(offset));
     }
 }

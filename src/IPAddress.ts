@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024–2025 Cloudnode OÜ
+ * Copyright © 2024–2025 Cloudnode OÜ.
  *
  * This file is part of @cldn/ip.
  *
@@ -14,22 +14,24 @@
  * You should have received a copy of the GNU Lesser General Public License along with @cldn/ip.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-import {IPv4, IPv6} from "./index.js";
+import {IP, IPv4, IPv6} from "./index.js";
 
 /**
- * An IP address.
+ * Represents an Internet Protocol (IP) address.
+ *
+ * @sealed
  */
 export abstract class IPAddress {
     /**
-     * The integer representation of the IP address.
+     * Integer representation of the IP address.
      */
     public readonly value: bigint;
 
     /**
      * Creates a new IP address instance.
      *
-     * @param value The integer representation of the IP address.
-     * @deprecated This class will be sealed in v2.0.0 and should not be extended by public API users.
+     * @param value Integer representation of the IP address.
+     * @internal
      */
     protected constructor(value: bigint) {
         this.value = value;
@@ -38,27 +40,59 @@ export abstract class IPAddress {
     /**
      * Creates an IP address from a string.
      *
-     * @throws {@link !RangeError} If provided string is not a valid IPv4 or IPv6 address
+     * @param ip String representation of the IP address.
+     * @param [resolveMapped=false] Whether to resolve IPv4-mapped IPv6 addresses (see {@link IPv6.hasMappedIPv4}).
+     * @throws {@link !RangeError} If the string is not a valid IPv4 or IPv6 address.
      */
-    public static fromString(str: string): IPv4 | IPv6 {
-        if (str.includes(":")) return IPv6.fromString(str);
-        return IPv4.fromString(str);
+    public static fromString(ip: string, resolveMapped = false): IP {
+        if (ip.includes(":")) {
+            const ipv6 = IPv6.fromString(ip);
+            if (resolveMapped && ipv6.hasMappedIPv4())
+                return ipv6.getMappedIPv4();
+            return ipv6;
+        }
+        return IPv4.fromString(ip);
     }
 
     /**
-     * Gets the IP address binary representation.
+     * Returns the binary representation of the IP address.
      */
     public abstract binary(): ArrayBufferView;
 
     /**
-     * Checks if the given addresses are equal.
+     * Checks if the given address is equal to this address.
+     *
+     * @param other Address to compare.
      */
     public equals(other: IPAddress): boolean {
         return other instanceof this.constructor && other.value === this.value;
     }
 
     /**
-     * Formats the IP address as string.
+     * Returns the IP address as a bigint or string primitive.
+     *
+     * @param hint Preferred primitive type.
+     */
+    public [Symbol.toPrimitive](hint: "number" | "string" | "default"): bigint | string {
+        if (hint === "string")
+            return this.toString();
+        return this.value;
+    }
+
+    /**
+     * Returns the IP address as a string.
      */
     public abstract toString(): string;
+
+    /**
+     * Returns a new IP address offset by the given amount from this address.
+     *
+     * @example ip.offset(1) // Returns the next IP address.
+     * @example ip.offset(-1) // Returns the previous IP address.
+     * @example IPAddress.fromString("203.0.113.42").offset(-18) // Returns 203.0.113.24.
+     *
+     * @param offset Number of steps to offset, positive or negative.
+     * @throws {@link !TypeError} If the resulting address is outside the IP address family range.
+     */
+    public abstract offset(offset: number | bigint): IPAddress;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2024–2025 Cloudnode OÜ
+ * Copyright © 2024–2025 Cloudnode OÜ.
  *
  * This file is part of @cldn/ip.
  *
@@ -17,38 +17,38 @@
 import {IPAddress} from "./index.js";
 
 /**
- * An IPv4 address.
+ * Represents an Internet Protocol version 4 (IPv4) address.
  */
 export class IPv4 extends IPAddress {
     /**
-     * Regular expression for testing IPv4 addresses in string form.
+     * Regular expression for testing IPv4 addresses in dotted-decimal string notation.
      */
-    public static regex = /^(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)$/;
+    public static REGEX = /^(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)$/;
 
     /**
      * Bit length of IPv4 addresses.
      */
-    public static bitLength = 32;
+    public static BIT_LENGTH = 32;
 
     /**
      * Creates a new IPv4 address instance.
      *
-     * @param value A 32-bit unsigned big integer.
-     * @throws {@link !TypeError} If provided value is not a 32-bit unsigned integer.
+     * @param value 32-bit unsigned integer.
+     * @throws {@link !TypeError} If the value is not a 32-bit unsigned integer.
      */
     public constructor(value: bigint);
 
     /**
      * Creates a new IPv4 address instance.
      *
-     * @param value A 32-bit unsigned number.
-     * @throws {@link !TypeError} If provided value is not a 32-bit unsigned integer.
+     * @param value 32-bit unsigned number.
+     * @throws {@link !TypeError} If the value is not a 32-bit unsigned integer.
      */
     public constructor(value: number);
 
     public constructor(value: number | bigint) {
         const int = BigInt(value);
-        if (int < 0n || int > (1n << BigInt(IPv4.bitLength)) - 1n)
+        if (int < 0n || int > (1n << BigInt(IPv4.BIT_LENGTH)) - 1n)
             throw new TypeError("Expected 32-bit unsigned integer, got " + int.constructor.name + " " + int.toString(10));
         super(int);
     }
@@ -56,8 +56,8 @@ export class IPv4 extends IPAddress {
     /**
      * Creates an IPv4 address instance from octets.
      *
-     * @param octets A typed array of 4 octets.
-     * @throws {@link !RangeError} If provided octets are not 4.
+     * @param octets Typed array of 4 octets.
+     * @throws {@link !RangeError} If the number of octets is not 4.
      */
     public static fromBinary(octets: Uint8Array): IPv4 {
         if (octets.length !== 4) throw new RangeError("Expected 4 octets, got " + octets.length);
@@ -75,19 +75,19 @@ export class IPv4 extends IPAddress {
     /**
      * Creates an IPv4 address instance from a string.
      *
-     * @param str A string representation of an IPv4 address.
-     * @throws {@link !RangeError} If provided string is not a valid IPv4 address.
+     * @param ip String representation of an IPv4 address.
+     * @throws {@link !RangeError} If the string is not a valid IPv4 address.
      */
-    public static override fromString(str: string): IPv4 {
-        const octets = str.split(".", 4).map(octet => Number.parseInt(octet, 10));
+    public static override fromString(ip: string): IPv4 {
+        const octets = ip.split(".", 4).map(octet => Number.parseInt(octet, 10));
         if (octets.some(octet => Number.isNaN(octet) || octet < 0 || octet > 255))
-            throw new RangeError("Expected valid IPv4 address, got " + str);
+            throw new RangeError("Expected valid IPv4 address, got " + ip);
 
         return IPv4.fromBinary(new Uint8Array(octets));
     }
 
     /**
-     * Gets the 4 octets of the IPv4 address.
+     * Returns the 4 octets of the IPv4 address.
      */
     public override binary(): Uint8Array {
         return new Uint8Array([
@@ -98,7 +98,14 @@ export class IPv4 extends IPAddress {
         ].map(Number));
     }
 
+    /**
+     * Returns the IP address as a string in dotted-decimal notation.
+     */
     public override toString(): string {
         return Array.from(this.binary()).map(octet => octet.toString(10)).join(".");
+    }
+
+    public override offset(offset: bigint | number): IPv4 {
+        return new IPv4(this.value + BigInt(offset));
     }
 }

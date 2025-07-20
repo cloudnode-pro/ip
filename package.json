@@ -1,7 +1,7 @@
 {
   "name": "@cldn/ip",
   "version": "0.0.0-dev",
-  "description": "IP address utility",
+  "description": "A modern, object-oriented TypeScript library for representing and performing arithmetic on IP addresses and subnets.",
   "main": "dist/index.js",
   "type": "module",
   "files": [
@@ -10,8 +10,13 @@
   ],
   "scripts": {
     "build": "tsc",
-    "docs": "typedoc src",
-    "test": "mocha"
+    "test": "vitest run --coverage",
+    "docs:gen": "typedoc && rm -rf docs/api && mv api docs/api",
+    "predocs:dev": "npm run docs:gen",
+    "docs:dev": "vitepress dev docs",
+    "predocs:build": "npm run docs:gen",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "repository": {
     "type": "git",
@@ -35,10 +40,15 @@
   },
   "homepage": "https://github.com/cloudnode-pro/ip#readme",
   "devDependencies": {
-    "chai": "^5.1.2",
-    "mocha": "^11.0.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
     "typedoc": "^0.28.0",
+    "typedoc-plugin-markdown": "^4.7.1",
     "typedoc-plugin-mdn-links": "^5.0.1",
-    "typescript": "^5.6.3"
+    "typedoc-vitepress-theme": "^1.1.2",
+    "typescript": "^5.6.3",
+    "vitepress": "^1.6.3",
+    "vitepress-plugin-auto-sidebar": "^1.3.5",
+    "vitest": "^3.2.4"
   }
 }
