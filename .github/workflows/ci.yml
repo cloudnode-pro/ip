@@ -144,7 +144,7 @@ jobs:
 
       - name: Upload docs artifact to pages
         if: "!github.event.release.prerelease"
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: docs/.vitepress/dist
 
