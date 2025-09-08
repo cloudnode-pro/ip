@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright © 2024–2025 Cloudnode OÜ.
  *
  * This file is part of @cldn/ip.

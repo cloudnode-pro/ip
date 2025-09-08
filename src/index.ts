@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright © 2024 Cloudnode OÜ.
  *
  * This file is part of @cldn/ip.
@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License along with @cldn/ip.
  * If not, see <https://www.gnu.org/licenses/>.
  */
+
 export {IP} from "./IP.js";
 export {IPAddress} from "./IPAddress.js";
 export {IPv4} from "./IPv4.js";
