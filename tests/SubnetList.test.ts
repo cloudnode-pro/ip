@@ -114,7 +114,7 @@ describe("SubnetList", () => {
 
         it("returns false when removing subnet not present", () => {
             const s1 = Subnet.fromCIDR("203.0.113.0/24");
-            const list = new SubnetList();
+            const list = new SubnetList([Subnet.fromCIDR("192.0.2.0/25")]);
             expect(list.remove(s1)).toBe(false);
         });
     });
