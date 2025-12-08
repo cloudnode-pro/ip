@@ -124,15 +124,11 @@ jobs:
         if: "!github.event.release.prerelease"
         working-directory: ./package/package
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Publish release candidate to NPM
         if: github.event.release.prerelease
         working-directory: ./package/package
         run: npm publish --provenance --access public --tag rc
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
       - name: Generate docs
         if: "!github.event.release.prerelease"
