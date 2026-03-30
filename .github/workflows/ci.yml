@@ -181,4 +181,4 @@ jobs:
       - name: Deploy to GitHub Pages
         if: "!github.event.release.prerelease"
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
