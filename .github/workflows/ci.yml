@@ -126,6 +126,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set version from release tag
+        run: npm version ${{ github.event.release.tag_name }} --git-tag-version=false
+
+      - name: Generate jsr.json from package.json
+        run: |
+          jq '{
+            name: .name,
+            version: .version,
+            license: .license,
+            exports: "src/index.ts"
+          }' package.json > jsr.json
+
+      - name: Publish to JSR
+        run: npx jsr publish
+
       - name: Download build artifact
         uses: actions/download-artifact@v8
         with:
@@ -135,9 +150,6 @@ jobs:
       - name: Extract build package
         working-directory: ./package
         run: tar -xzf cldn-ip-0.0.0-dev.tgz
-
-      - name: Set version from release tag
-        run: npm version ${{ github.event.release.tag_name }} --git-tag-version=false
 
       - name: Copy package.json to build package
         run: cp package.json package/package

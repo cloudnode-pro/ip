@@ -1,5 +1,5 @@
 /*!
- * Copyright © 2024–2025 Cloudnode OÜ.
+ * Copyright © 2024–2026 Cloudnode OÜ.
  *
  * This file is part of @cldn/ip.
  *
@@ -23,7 +23,7 @@ export class SubnetList implements Network {
   /**
    * A network of reserved subnets. This network does not contain publicly routable IP addresses.
    */
-  public static readonly BOGON = new SubnetList([
+  public static readonly BOGON: SubnetList = new SubnetList([
     // IPv4
     Subnet.fromCIDR("0.0.0.0/8"),
     Subnet.fromCIDR("10.0.0.0/8"),
@@ -133,7 +133,7 @@ export class SubnetList implements Network {
    * @param subnet Subnet to remove.
    * @returns Whether the subnet was found and removed.
    */
-  public remove(subnet: Subnet<IP>) {
+  public remove(subnet: Subnet<IP>): boolean {
     for (const [index, s] of this.#subnets.entries()) {
       if (s.equals(subnet)) {
         this.#subnets.splice(index, 1);

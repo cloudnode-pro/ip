@@ -1,5 +1,5 @@
 /*!
- * Copyright © 2024–2025 Cloudnode OÜ.
+ * Copyright © 2024–2026 Cloudnode OÜ.
  *
  * This file is part of @cldn/ip.
  *
@@ -25,7 +25,7 @@ export class Subnet<T extends IP> implements Network<T> {
   /**
    * Subnet for IPv4-mapped IPv6 addresses (`::ffff:0.0.0.0/96`).
    */
-  public static readonly IPV4_MAPPED_IPV6 = Subnet.fromCIDR(
+  public static readonly IPV4_MAPPED_IPV6: Subnet<IP> = Subnet.fromCIDR(
     "::ffff:0.0.0.0/96",
   );
 
