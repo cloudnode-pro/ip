@@ -1,5 +1,5 @@
 /*!
- * Copyright © 2024 Cloudnode OÜ.
+ * Copyright © 2024–2026 Cloudnode OÜ.
  *
  * This file is part of @cldn/ip.
  *
@@ -15,10 +15,10 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-export {IP} from "./IP.js";
+export type {IP} from "./IP.js";
 export {IPAddress} from "./IPAddress.js";
 export {IPv4} from "./IPv4.js";
 export {IPv6} from "./IPv6.js";
-export {Network} from "./Network.js";
+export type {Network} from "./Network.js";
 export {Subnet} from "./Subnet.js";
 export {SubnetList} from "./SubnetList.js";
