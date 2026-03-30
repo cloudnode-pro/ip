@@ -8,7 +8,6 @@ export default defineConfig({
         coverage: {
             reporter: process.env.GITHUB_ACTIONS ? "text" : ["text", "html"],
             include: ["src/**"],
-            all: true,
             thresholds: {
                 100: true,
             },
