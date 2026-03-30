@@ -135,7 +135,7 @@ jobs:
             name: .name,
             version: .version,
             license: .license,
-            exports: "src/index.ts"
+            exports: "./src/index.ts"
           }' package.json > jsr.json
 
       - name: Publish to JSR
