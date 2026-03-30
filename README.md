@@ -17,7 +17,7 @@ arithmetic on IP addresses and subnets.
 
 ### Node.js
 
-Install with `npm`:
+Install from NPM:
 
 ```sh
 npm install @cldn/ip
@@ -31,10 +31,16 @@ import { IPv4, IPv6, Subnet } from "@cldn/ip";
 
 ### Deno
 
-Import the package from npm using the standard prefix:
+Add from JSR:
+
+```sh
+deno add jsr:@cldn/ip
+```
+
+Import and use:
 
 ```ts
-import { IPv4, IPv6, Subnet } from "npm:@cldn/ip";
+import { IPv4, IPv6, Subnet } from "@cldn/ip";
 ```
 
 ### Browsers
@@ -91,7 +97,7 @@ For real-time chat or community discussions, join our Matrix space:
 
 ## Licence
 
-Copyright © 2024–2025 Cloudnode OÜ.
+Copyright © 2024–2026 Cloudnode OÜ.
 
 This project is licensed under the terms of the
 [LGPL-3.0](https://github.com/cloudnode-pro/ip/blob/master/COPYING) licence.
