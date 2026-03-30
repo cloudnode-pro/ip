@@ -14,26 +14,26 @@
  * You should have received a copy of the GNU Lesser General Public License along with @cldn/ip.
  * If not, see <https://www.gnu.org/licenses/>
  */
-import {IP} from "./IP.js";
+import { IP } from "./IP.js";
 
 /**
  * A network of IP addresses.
  */
 export interface Network<T extends IP = IP> extends Iterable<T> {
-    /**
-     * Determines whether this network contains the provided IP address.
-     *
-     * @param address IP address to check.
-     */
-    contains(address: T): boolean;
+  /**
+   * Determines whether this network contains the provided IP address.
+   *
+   * @param address IP address to check.
+   */
+  contains(address: T): boolean;
 
-    /**
-     * Returns the exact number of IP addresses in this network.
-     */
-    size(): bigint;
+  /**
+   * Returns the exact number of IP addresses in this network.
+   */
+  size(): bigint;
 
-    /**
-     * Iterates over all IP addresses in this network.
-     */
-    [Symbol.iterator](): Iterator<T>;
+  /**
+   * Iterates over all IP addresses in this network.
+   */
+  [Symbol.iterator](): Iterator<T>;
 }
