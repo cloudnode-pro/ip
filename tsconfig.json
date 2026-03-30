@@ -9,6 +9,7 @@
     "target": "esnext",
     "module": "Node16",
     "moduleResolution": "Node16",
+    "isolatedModules": true,
     "inlineSourceMap": true,
     "outDir": "./dist",
     "declaration": true,
