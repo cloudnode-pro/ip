@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU Lesser General Public License along with @cldn/ip.
  * If not, see <https://www.gnu.org/licenses/>
  */
-import {IPv4} from "./IPv4.js";
-import {IPv6} from "./IPv6.js";
+import { IPv4 } from "./IPv4.js";
+import { IPv6 } from "./IPv6.js";
 
 /**
  * An {@link IPv4} or {@link IPv6} address.
@@ -23,8 +23,8 @@ import {IPv6} from "./IPv6.js";
 export type IP = IPv4 | IPv6;
 
 export namespace IP {
-    /**
-     * An {@link IPv4} or {@link IPv6} address class.
-     */
-    export type Class = typeof IPv4 | typeof IPv6;
+  /**
+   * An {@link IPv4} or {@link IPv6} address class.
+   */
+  export type Class = typeof IPv4 | typeof IPv6;
 }
