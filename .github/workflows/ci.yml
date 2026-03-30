@@ -91,6 +91,9 @@ jobs:
       - name: Install test dependencies
         run: deno install
 
+      - name: Check types
+        run: deno check src tests --sloppy-imports
+
       - name: Test
         run: deno task test
 
