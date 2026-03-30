@@ -103,7 +103,6 @@ jobs:
   publish:
     name: Publish
     needs:
-      - build
       - test
       - test-deno
     if: github.event_name == 'release'
@@ -142,7 +141,7 @@ jobs:
           }' package.json > jsr.json
 
       - name: Publish to JSR
-        run: npx jsr publish
+        run: npx jsr publish --allow-dirty
 
       - name: Download build artifact
         uses: actions/download-artifact@v8
