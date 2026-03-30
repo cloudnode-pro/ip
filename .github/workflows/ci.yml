@@ -92,15 +92,6 @@ jobs:
       - name: Install test dependencies
         run: deno install
 
-      - name: Download build artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: package
-          path: .
-
-      - name: Extract build package
-        run: tar -xzf cldn-ip-0.0.0-dev.tgz --strip-components=1 -C . --overwrite
-
       - name: Test
         run: deno task test
 
