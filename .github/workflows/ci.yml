@@ -94,6 +94,9 @@ jobs:
       - name: Check types
         run: deno check src tests --sloppy-imports
 
+      - name: Check formatting
+        run: deno fmt --check
+
       - name: Test
         run: deno task test
 
