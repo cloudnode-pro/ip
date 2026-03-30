@@ -4,7 +4,7 @@
   "description": "A modern, object-oriented TypeScript library for representing and performing arithmetic on IP addresses and subnets.",
   "homepage": "https://ip.cldn.pro",
   "author": "Cloudnode",
-  "license": "LGPL-3.0",
+  "license": "LGPL-3.0-only",
   "type": "module",
   "main": "dist/index.js",
   "files": [
