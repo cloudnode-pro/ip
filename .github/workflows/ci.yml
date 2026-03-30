@@ -102,7 +102,10 @@ jobs:
 
   publish:
     name: Publish
-    needs: build
+    needs:
+      - build
+      - test
+      - test-deno
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
     permissions:
