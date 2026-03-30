@@ -102,7 +102,10 @@ jobs:
 
   publish:
     name: Publish
-    needs: build
+    needs:
+      - build
+      - test
+      - test-deno
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
     permissions:
@@ -135,7 +138,7 @@ jobs:
             name: .name,
             version: .version,
             license: .license,
-            exports: "src/index.ts"
+            exports: "./src/index.ts"
           }' package.json > jsr.json
 
       - name: Publish to JSR
