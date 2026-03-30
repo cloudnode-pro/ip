@@ -78,6 +78,25 @@ jobs:
       - name: Test
         run: npm run test
 
+  test-deno:
+    name: Test on Deno
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install Deno
+        uses: denoland/setup-deno@v2
+
+      - name: Install test dependencies
+        run: deno install
+
+      - name: Check types
+        run: deno check src tests --sloppy-imports
+
+      - name: Test
+        run: deno task test
+
   publish:
     name: Publish
     needs: build
