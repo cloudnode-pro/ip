@@ -13,7 +13,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "vitest run --coverage",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "docs:gen": "typedoc && rm -rf docs/api && mv api docs/api",
     "predocs:dev": "npm run docs:gen",
     "docs:dev": "vitepress dev docs",

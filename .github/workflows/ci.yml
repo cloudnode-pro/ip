@@ -76,7 +76,7 @@ jobs:
         run: tar -xzf cldn-ip-0.0.0-dev.tgz --strip-components=1 -C . --overwrite
 
       - name: Test
-        run: npm run test
+        run: npm run test:coverage
 
   test-deno:
     name: Test on Deno
@@ -98,7 +98,7 @@ jobs:
         run: deno fmt --check
 
       - name: Test
-        run: deno task test
+        run: deno task test:coverage
 
   publish:
     name: Publish
