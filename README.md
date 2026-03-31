@@ -15,29 +15,22 @@ arithmetic on IP addresses and subnets.
 
 ## Usage
 
-### Node.js
+### Installation
 
-Install from NPM:
+Install the package using your preferred environment:
 
 ```sh
+# Node.js
 npm install @cldn/ip
-```
 
-Import and use:
-
-```ts
-import { IPv4, IPv6, Subnet } from "@cldn/ip";
-```
-
-### Deno
-
-Add from JSR:
-
-```sh
+# Deno
 deno add jsr:@cldn/ip
+
+# Bun
+bun install @cldn/ip
 ```
 
-Import and use:
+### Import
 
 ```ts
 import { IPv4, IPv6, Subnet } from "@cldn/ip";
@@ -46,10 +39,10 @@ import { IPv4, IPv6, Subnet } from "@cldn/ip";
 ### Browsers
 
 For browser usage, it is recommended to use a bundler like
-[Vite](https://vitejs.dev/), or [Webpack](https://webpack.js.org/). If you are
-using a bundler, follow the same usage as for Node.js.
+[Vite](https://vitejs.dev/) or [Webpack](https://webpack.js.org/). If using a
+bundler, import as above.
 
-Alternatively, you can import the library as a
+Alternatively, load as a
 [JavaScript module](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
 from [ESM>CDN](https://esm.sh/):
 
