@@ -41,7 +41,7 @@ jobs:
           name: package
           path: cldn-ip-0.0.0-dev.tgz
 
-  test:
+  test-node:
     name: Test on Node.js ${{ matrix.node }}
     runs-on: ubuntu-latest
     needs: build
@@ -119,7 +119,7 @@ jobs:
   publish:
     name: Publish
     needs:
-      - test
+      - test-node
       - test-deno
       - test-bun
     if: github.event_name == 'release'
