@@ -24,7 +24,7 @@ jobs:
           cache: npm
 
       - name: Install latest NPM
-        run: npm i -g npm@latest
+        run: npm i -g npm@11.12.1
 
       - name: Install dependencies
         run: npm ci
@@ -61,7 +61,7 @@ jobs:
           cache: npm
 
       - name: Install latest NPM
-        run: npm i -g npm@latest
+        run: npm i -g npm@11.12.1
 
       - name: Install test dependencies
         run: npm ci
@@ -140,7 +140,7 @@ jobs:
           cache: npm
 
       - name: Install latest NPM
-        run: npm i -g npm@latest
+        run: npm i -g npm@11.12.1
 
       - name: Install dependencies
         run: npm ci
