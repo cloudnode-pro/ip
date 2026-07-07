@@ -48,7 +48,7 @@ from [ESM>CDN](https://esm.sh/):
 
 ```html
 <script type="module">
-  import { IPv4, IPv6, Subnet } from "https://esm.sh/@cldn/ip";
+import { IPv4, IPv6, Subnet } from "https://esm.sh/@cldn/ip";
 </script>
 ```
 
