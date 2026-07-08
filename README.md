@@ -5,6 +5,7 @@
 [![NPM](https://img.shields.io/npm/v/@cldn/ip.svg)](https://www.npmjs.com/package/@cldn/ip)
 [![Downloads](https://img.shields.io/npm/d18m/@cldn/ip.svg)](https://www.npmjs.com/package/@cldn/ip)
 [![Licence](https://img.shields.io/github/license/cloudnode-pro/ip)](https://github.com/cloudnode-pro/ip/blob/master/COPYING)
+[![JSR Score](https://jsr.io/badges/@cldn/ip/score)](https://jsr.io/@cldn/ip)
 [![CI](https://github.com/cloudnode-pro/ip/actions/workflows/ci.yml/badge.svg)](https://github.com/cloudnode-pro/ip/actions/workflows/ci.yml)
 ![Coverage: 100%](https://img.shields.io/badge/coverage-100%25-brightgreen)
 
